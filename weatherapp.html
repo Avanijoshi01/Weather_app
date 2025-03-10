@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Prediction App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e3f2fd;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #0277bd;
+        }
+        input[type="text"], input[type="password"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        button {
+            background-color: #0288d1;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .weather-info, .forecast-info {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="authContainer">
+        <h1>Weather Prediction App</h1>
+        <input type="text" id="username" placeholder="Enter Username">
+        <input type="password" id="password" placeholder="Enter Password">
+        <div class="button-container">
+            <button onclick="login()">Login</button>
+            <button onclick="signup()">Sign Up</button>
+        </div>
+    </div>
+    
+    <div class="container" id="weatherContainer" style="display: none;">
+        <h1>Weather Prediction</h1>
+        <input type="text" id="city" placeholder="Enter city name">
+        <button onclick="getWeather()">Get Weather</button>
+        <select id="unitSelector" onchange="convertUnits()">
+            <option value="C">Celsius</option>
+            <option value="F">Fahrenheit</option>
+        </select>
+        <div class="weather-info" id="weatherInfo"></div>
+        <div class="forecast-info" id="forecastInfo"></div>
+    </div>
+
+    <script>
+        function login() {
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+            if (username && password) {
+                document.getElementById("authContainer").style.display = "none";
+                document.getElementById("weatherContainer").style.display = "block";
+            } else {
+                alert("Please enter username and password");
+            }
+        }
+
+        function signup() {
+            alert("Signup functionality is not implemented yet.");
+        }
+
+        function getWeather() {
+            let city = document.getElementById("city").value;
+            if (city === "") {
+                alert("Please enter a city name");
+                return;
+            }
+            
+            let temp = Math.floor(Math.random() * 15) + 20;
+            let humidity = Math.floor(Math.random() * 40) + 30;
+            let windSpeed = Math.floor(Math.random() * 5) + 2;
+            let forecast = "";
+            
+            for (let i = 1; i <= 7; i++) {
+                let dailyTemp = Math.floor(Math.random() * 10) + 15;
+                forecast += `<p>Day ${i}: ${dailyTemp}°C</p>`;
+            }
+            
+            document.getElementById("weatherInfo").innerHTML = `
+                <h2>Weather for ${city}</h2>
+                <p>Temperature: <span id='tempValue'>${temp}</span>°C</p>
+                <p>Humidity: ${humidity}%</p>
+                <p>Wind Speed: ${windSpeed} m/s</p>
+            `;
+            document.getElementById("forecastInfo").innerHTML = `<h3>7-Day Forecast</h3>` + forecast;
+        }
+
+        function convertUnits() {
+            let unit = document.getElementById("unitSelector").value;
+            let tempElement = document.getElementById("tempValue");
+            let temp = parseInt(tempElement.innerText);
+            
+            if (unit === "F") {
+                tempElement.innerText = Math.round((temp * 9/5) + 32);
+            } else {
+                tempElement.innerText = Math.round((temp - 32) * 5/9);
+            }
+        }
+    </script>
+</body>
+</html>
